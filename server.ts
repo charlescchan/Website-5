@@ -15,7 +15,7 @@ async function startServer() {
   app.use(express.json());
 
   // API Routes
-  const CONTENT_FILE = path.join(__dirname, 'data', 'content.json');
+  const CONTENT_FILE = path.join(__dirname, 'public', 'content.json');
 
   // GET content
   app.get("/api/content", (req, res) => {
