@@ -1,146 +1,154 @@
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import Navbar from '../components/Navbar';
 import BackToTop from '../components/BackToTop';
-import { School, Library, Monitor, Play, Quote, Clock } from 'lucide-react';
+import { Play, ChevronDown, ChevronUp } from 'lucide-react';
 import clsx from 'clsx';
 import { calculateReadingTime } from '../utils/readingTime';
-import { EditableText, EditableMedia, AdminControls } from '../components/Editable';
 
 const PartA = () => {
-  const [activeTab, setActiveTab] = useState<'teachers' | 'info' | 'digital'>('teachers');
+  const [activeDefinitions, setActiveDefinitions] = useState<string[]>([]);
 
-  const tabs = {
-    teachers: {
-      title: "Teachers",
-      icon: School,
-      color: "bg-blue-500",
-      content: "As teachers, we are instructional leaders who collaborate with educators to integrate information literacy into the curriculum. We design engaging learning experiences that foster critical thinking, curiosity, and a lifelong love of reading, ensuring every student has the skills to succeed in an information-rich world."
+  const definitions = [
+    {
+      id: "effective-tls",
+      term: "Effective Teacher Librarians",
+      definition: "Effective teacher librarians (TLs) are lifelong learners who critically analyse, proactively learn, and continually adapt to changes in pedagogy, information, and technology to shape the TL’s services and library’s resources to support teaching and learning in a school community."
     },
-    info: {
-      title: "Information Professionals",
-      icon: Library,
-      color: "bg-indigo-500",
-      content: "As information specialists, we curate diverse, relevant collections that reflect our community. We organize knowledge systems to ensure equitable access, guiding users through complex information landscapes with expertise in database management, resource selection, and ethical information use."
+    {
+      id: "teachers",
+      term: "Teachers",
+      definition: "As teachers, TLs continually learn new pedagogical theory, as well as support the current ways in which teachers teach and students learn."
     },
-    digital: {
-      title: "Digital Literacy Experts",
-      icon: Monitor,
-      color: "bg-teal-500",
-      content: "As digital literacy experts, we empower students and staff to navigate the digital world safely and effectively. We champion the use of educational technology, teaching digital citizenship, online safety, and the creative use of digital tools to express understanding and innovation."
+    {
+      id: "info-pros",
+      term: "Information Professionals",
+      definition: "As professionals in information literacy, TLs support both students and teachers in how to acquire, assess, evaluate, and use information."
+    },
+    {
+      id: "digital-experts",
+      term: "Digital Literacy Experts",
+      definition: "As professionals in digital literacy, TLs first learn, then lead, collaborate, and teach others in the effective use of technology in the teaching and learning process."
     }
-  };
+  ];
 
-  // Calculate total reading time based on all content
-  const allContent = Object.values(tabs).map(t => t.content).join(' ') + 
-    "My professional identity is built upon three interconnected pillars, each essential to the modern school library.";
+  // Calculate total reading time
+  const allContent = definitions.map(d => d.definition).join(' ');
   const readingTime = calculateReadingTime(allContent);
+
+  const toggleDefinition = (id: string) => {
+    setActiveDefinitions(prev => 
+      prev.includes(id) 
+        ? prev.filter(item => item !== id)
+        : [...prev, id]
+    );
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 noise-bg font-sans">
       <Navbar />
       <BackToTop />
-      <AdminControls />
       
-      <main className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+      <main className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
           <div className="flex items-center justify-center gap-2 mb-4">
-            <span className="text-blue-600 dark:text-blue-400 font-bold tracking-widest uppercase text-xs">Part A: Professional Knowledge</span>
-            <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600"></span>
-            <span className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 uppercase tracking-widest font-medium">
-              <Clock size={12} /> {readingTime}
-            </span>
+            <span className="text-blue-600 dark:text-blue-400 font-bold tracking-widest uppercase text-xs">Part A</span>
           </div>
-          <h1 className="font-serif text-4xl md:text-6xl font-medium text-slate-900 dark:text-white mb-6">
-            <EditableText id="partA.title" defaultText="Statement of Philosophy" />
+          <h1 className="font-serif text-4xl md:text-5xl font-medium text-slate-900 dark:text-white mb-8 leading-tight">
+            Part A – Effective Teacher Librarian Philosophy
           </h1>
-          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
-            <EditableText id="partA.intro" defaultText="My professional identity is built upon three interconnected pillars, each essential to the modern school library." multiline />
+          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed italic">
+            Please click on each of the words below and read together as one paragraph:
           </p>
         </motion.div>
 
-        {/* Interactive Tabs */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-          {(Object.keys(tabs) as Array<keyof typeof tabs>).map((key) => {
-            const tab = tabs[key];
-            const isActive = activeTab === key;
+        {/* Interactive Definitions */}
+        <div className="space-y-4 mb-20">
+          {definitions.map((item) => {
+            const isOpen = activeDefinitions.includes(item.id);
             return (
-              <button
-                key={key}
-                onClick={() => setActiveTab(key)}
+              <motion.div
+                key={item.id}
+                initial={false}
                 className={clsx(
-                  "relative p-6 rounded-2xl border text-left transition-all duration-300 flex flex-col gap-4 group overflow-hidden",
-                  isActive 
-                    ? "bg-white dark:bg-slate-900 border-blue-500 shadow-lg ring-1 ring-blue-500" 
-                    : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-blue-300"
+                  "bg-white dark:bg-slate-900 rounded-2xl border overflow-hidden transition-all duration-300",
+                  isOpen 
+                    ? "border-blue-500 shadow-lg ring-1 ring-blue-500" 
+                    : "border-slate-200 dark:border-slate-800 hover:border-blue-300"
                 )}
               >
-                <div className={clsx(
-                  "p-3 rounded-xl w-fit transition-colors",
-                  isActive ? "bg-blue-500 text-white" : "bg-slate-100 dark:bg-slate-800 text-slate-500 group-hover:text-blue-500"
-                )}>
-                  <tab.icon size={24} />
-                </div>
-                <span className={clsx(
-                  "font-serif text-lg font-medium",
-                  isActive ? "text-slate-900 dark:text-white" : "text-slate-500"
-                )}>
-                  <EditableText id={`partA.tab.${key}.title`} defaultText={tab.title} />
-                </span>
-                {isActive && (
-                  <motion.div
-                    layoutId="active-glow"
-                    className="absolute inset-0 bg-blue-500/5 pointer-events-none"
-                  />
-                )}
-              </button>
+                <button
+                  onClick={() => toggleDefinition(item.id)}
+                  className="w-full px-6 py-5 flex items-center justify-between text-left group"
+                >
+                  <span className={clsx(
+                    "font-serif text-xl font-medium transition-colors",
+                    isOpen ? "text-blue-600 dark:text-blue-400" : "text-slate-900 dark:text-white group-hover:text-blue-600"
+                  )}>
+                    {item.term}
+                  </span>
+                  <span className={clsx(
+                    "p-2 rounded-full transition-colors",
+                    isOpen ? "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400" : "bg-slate-100 text-slate-500 dark:bg-slate-800"
+                  )}>
+                    {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                  </span>
+                </button>
+                
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                    >
+                      <div className="px-6 pb-6 pt-0 text-lg text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800/50 mt-2 pt-4">
+                        {item.definition}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             );
           })}
         </div>
 
-        {/* Content Display */}
+        {/* Figure 1 */}
         <motion.div
-          key={activeTab}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="bg-white dark:bg-slate-900 rounded-3xl p-8 md:p-12 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden mb-20"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-3xl mx-auto"
         >
-          <Quote className="absolute top-8 left-8 text-slate-100 dark:text-slate-800 transform -scale-x-100" size={120} />
-          <div className="relative z-10">
-            <h3 className="font-serif text-2xl font-medium text-slate-900 dark:text-white mb-6">
-              The Teacher Librarian as <EditableText id={`partA.tab.${activeTab}.title`} defaultText={tabs[activeTab].title} />
-            </h3>
-            <div className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed text-balance">
-              <EditableText id={`partA.tab.${activeTab}.content`} defaultText={tabs[activeTab].content} multiline />
-            </div>
+          <div className="text-center mb-6">
+            <span className="text-sm font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400">Figure 1</span>
+            <h3 className="font-serif text-2xl text-slate-900 dark:text-white mt-2">Student Testimonial of Changes to Library</h3>
           </div>
-        </motion.div>
 
-        {/* Video Section */}
-        <div className="relative rounded-3xl overflow-hidden bg-slate-900 aspect-video group cursor-pointer shadow-2xl">
-          <EditableMedia 
-            id="partA.video.thumbnail" 
-            defaultSrc="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2670&auto=format&fit=crop" 
-            type="video"
-            className="absolute inset-0 w-full h-full"
-          />
-          <div className="absolute inset-0 w-full h-full bg-black/40 pointer-events-none"></div>
-          
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-20 h-20 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 group-hover:scale-110 transition-transform">
-              <Play className="text-white ml-1" fill="currentColor" size={32} />
+          <div className="relative rounded-3xl overflow-hidden bg-slate-900 aspect-video group cursor-pointer shadow-2xl mb-4">
+            {/* Placeholder for video - in a real app this would be a video player */}
+            <img 
+              src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2670&auto=format&fit=crop" 
+              alt="Student Testimonial Video Thumbnail" 
+              className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity duration-500"
+            />
+            
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-20 h-20 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 group-hover:scale-110 transition-transform duration-300 shadow-xl">
+                <Play className="text-white ml-1" fill="currentColor" size={32} />
+              </div>
             </div>
           </div>
-          <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
-            <p className="text-white/80 text-sm font-mono uppercase tracking-wider mb-1">Figure 1</p>
-            <p className="text-white font-serif text-xl"><EditableText id="partA.video.caption" defaultText="Student Testimonial: The Impact of the Modern Library" /></p>
-          </div>
-        </div>
+          
+          <p className="text-sm text-slate-500 dark:text-slate-400 text-center italic">
+            Note: Secondary Media Center Testimonial [Video] by Charles Chan, 2024, property of the author.
+          </p>
+        </motion.div>
 
       </main>
     </div>
