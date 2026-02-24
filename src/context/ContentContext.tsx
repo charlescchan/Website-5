@@ -9,9 +9,12 @@ interface ContentContextType {
   content: ContentData;
   isEditing: boolean;
   isAuthenticated: boolean;
+  githubConfig: { token: string, owner: string, repo: string };
   toggleEditMode: () => void;
   updateContent: (key: string, value: string) => void;
   saveContent: () => Promise<void>;
+  downloadContent: () => void;
+  updateGithubConfig: (config: { token: string, owner: string, repo: string }) => void;
   login: (password: string) => Promise<boolean>;
   logout: () => void;
 }
@@ -83,14 +86,35 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setContent(prev => ({ ...prev, [key]: value }));
   };
 
+  const [githubConfig, setGithubConfig] = useState({
+    token: import.meta.env.VITE_GITHUB_TOKEN || '',
+    owner: import.meta.env.VITE_REPO_OWNER || '',
+    repo: import.meta.env.VITE_REPO_NAME || ''
+  });
+
+  // Load settings from localStorage on mount
+  useEffect(() => {
+    const savedConfig = localStorage.getItem('github_config');
+    if (savedConfig) {
+      setGithubConfig(prev => ({ ...prev, ...JSON.parse(savedConfig) }));
+    }
+  }, []);
+
+  const updateGithubConfig = (config: { token: string, owner: string, repo: string }) => {
+    setGithubConfig(config);
+    localStorage.setItem('github_config', JSON.stringify(config));
+  };
+
   const saveToGitHub = async (newContent: ContentData) => {
-    const token = import.meta.env.VITE_GITHUB_TOKEN;
-    const owner = import.meta.env.VITE_REPO_OWNER;
-    const repo = import.meta.env.VITE_REPO_NAME;
+    const { token, owner, repo } = githubConfig;
     const path = 'public/content.json';
 
     if (!token || !owner || !repo) {
-      alert("GitHub configuration missing. Please set VITE_GITHUB_TOKEN, VITE_REPO_OWNER, and VITE_REPO_NAME in your environment variables.");
+      const missing = [];
+      if (!token) missing.push("Token");
+      if (!owner) missing.push("Owner");
+      if (!repo) missing.push("Repo");
+      alert(`GitHub configuration missing (${missing.join(', ')}). Please configure it in Settings.`);
       return false;
     }
 
@@ -104,15 +128,26 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
       });
 
       if (!getResponse.ok) {
-        throw new Error('Failed to fetch file info from GitHub');
+        if (getResponse.status === 404) {
+           // File doesn't exist, create it (sha will be null/undefined which is fine for create)
+           console.log("File not found, creating new...");
+        } else {
+           throw new Error(`Failed to fetch file info from GitHub (${getResponse.status})`);
+        }
       }
 
-      const fileData = await getResponse.json();
+      const fileData = await getResponse.ok ? await getResponse.json() : {};
       const sha = fileData.sha;
 
       // 2. Update the file
       const contentString = JSON.stringify(newContent, null, 2);
-      const contentEncoded = btoa(unescape(encodeURIComponent(contentString))); // Handle UTF-8
+      // Use a UTF-8 safe base64 encoding
+      const contentEncoded = btoa(
+        encodeURIComponent(contentString).replace(/%([0-9A-F]{2})/g,
+          function toSolidBytes(match, p1) {
+            return String.fromCharCode(parseInt(p1, 16));
+        })
+      );
 
       const putResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
         method: 'PUT',
@@ -146,7 +181,6 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     // 1. Try Local Dev Server (if running locally)
     if (import.meta.env.DEV) {
       try {
-        // We use a dummy password for dev server save
         const response = await fetch('/api/content', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -158,19 +192,22 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
           return;
         }
       } catch (e) {
-        // Ignore error and fall through to GitHub/Download
         console.log("Local save failed, trying alternatives...");
       }
     }
 
-    // 2. Try GitHub API (Production/Netlify)
-    if (import.meta.env.VITE_GITHUB_TOKEN) {
+    // 2. Try GitHub API
+    if (githubConfig.token) {
       const success = await saveToGitHub(content);
       if (success) setIsEditing(false);
       return;
     }
 
     // 3. Fallback: Download JSON
+    downloadContent();
+  };
+
+  const downloadContent = () => {
     const blob = new Blob([JSON.stringify(content, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -180,16 +217,16 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    alert('Configuration for automatic saving is missing. The content file has been downloaded. Please commit this file to your repository in the "public" folder manually.');
+    alert('Content downloaded. Please upload "content.json" to your repository in the "public" folder.');
     setIsEditing(false);
-  };
+  }
 
   const login = async (password: string): Promise<boolean> => {
-    // Client-side check for static deployment
-    // Note: In a real static app, secrets are visible in the bundle. 
-    // For a portfolio, this is often an acceptable trade-off for simplicity.
     const validPassword = import.meta.env.VITE_ADMIN_PASSWORD || "admin123";
     
+    // Debug log for troubleshooting (remove in high security apps)
+    console.log(`Login attempt. Expecting: ${validPassword.substring(0, 3)}...`);
+
     if (password === validPassword) {
       setIsAuthenticated(true);
       sessionStorage.setItem('is_authenticated', 'true');
@@ -209,9 +246,12 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
       content, 
       isEditing, 
       isAuthenticated,
+      githubConfig,
       toggleEditMode, 
       updateContent, 
       saveContent,
+      downloadContent,
+      updateGithubConfig,
       login,
       logout
     }}>
