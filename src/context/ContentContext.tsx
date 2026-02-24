@@ -15,6 +15,7 @@ interface ContentContextType {
   saveContent: () => Promise<void>;
   downloadContent: () => void;
   updateGithubConfig: (config: { token: string, owner: string, repo: string }) => void;
+  setAdminPassword: (password: string) => Promise<boolean>;
   login: (password: string) => Promise<boolean>;
   logout: () => void;
 }
@@ -105,10 +106,24 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     localStorage.setItem('github_config', JSON.stringify(config));
   };
 
+  // Helper to hash password
+  const hashPassword = async (pwd: string): Promise<string> => {
+    const msgBuffer = new TextEncoder().encode(pwd);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  };
+
+  const setAdminPassword = async (newPassword: string) => {
+    const hash = await hashPassword(newPassword);
+    updateContent('system.password_hash', hash);
+    return true;
+  };
+
   const saveToGitHub = async (newContent: ContentData) => {
     const { token, owner, repo } = githubConfig;
     const path = 'public/content.json';
-
+    // ... (rest of saveToGitHub implementation)
     if (!token || !owner || !repo) {
       const missing = [];
       if (!token) missing.push("Token");
@@ -222,16 +237,25 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
   }
 
   const login = async (password: string): Promise<boolean> => {
-    const validPassword = import.meta.env.VITE_ADMIN_PASSWORD || "admin123";
-    
-    // Debug log for troubleshooting (remove in high security apps)
-    console.log(`Login attempt. Expecting: ${validPassword.substring(0, 3)}...`);
+    // 1. Check against hash in content (Priority)
+    if (content['system.password_hash']) {
+      const inputHash = await hashPassword(password);
+      if (inputHash === content['system.password_hash']) {
+        setIsAuthenticated(true);
+        sessionStorage.setItem('is_authenticated', 'true');
+        return true;
+      }
+      return false;
+    }
 
+    // 2. Fallback to Environment Variable (if no hash set yet)
+    const validPassword = import.meta.env.VITE_ADMIN_PASSWORD || "admin123";
     if (password === validPassword) {
       setIsAuthenticated(true);
       sessionStorage.setItem('is_authenticated', 'true');
       return true;
     }
+
     return false;
   };
 
@@ -252,6 +276,7 @@ export const ContentProvider: React.FC<{ children: React.ReactNode }> = ({ child
       saveContent,
       downloadContent,
       updateGithubConfig,
+      setAdminPassword,
       login,
       logout
     }}>

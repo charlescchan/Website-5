@@ -122,14 +122,17 @@ export const EditableMedia: React.FC<EditableMediaProps> = ({
 };
 
 export const AdminControls = () => {
-  const { isEditing, isAuthenticated, toggleEditMode, saveContent, login, logout, downloadContent, githubConfig, updateGithubConfig } = useContent();
+  const { isEditing, isAuthenticated, toggleEditMode, saveContent, login, logout, downloadContent, githubConfig, updateGithubConfig, setAdminPassword } = useContent();
   const [showLogin, setShowLogin] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   // Settings state
+  const [activeTab, setActiveTab] = useState<'github' | 'security'>('github');
   const [tempConfig, setTempConfig] = useState(githubConfig);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -143,14 +146,30 @@ export const AdminControls = () => {
     }
   };
 
-  const handleSaveSettings = (e: React.FormEvent) => {
+  const handleSaveSettings = async (e: React.FormEvent) => {
     e.preventDefault();
-    updateGithubConfig(tempConfig);
-    setShowSettings(false);
-    alert("Settings saved! You can now save content to GitHub.");
+    
+    if (activeTab === 'github') {
+      updateGithubConfig(tempConfig);
+      alert("GitHub settings saved!");
+    } else {
+      if (newPassword !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
+      if (newPassword.length < 4) {
+        alert("Password must be at least 4 characters.");
+        return;
+      }
+      await setAdminPassword(newPassword);
+      setNewPassword("");
+      setConfirmPassword("");
+      alert("Admin password updated! Don't forget to SAVE content to persist this change.");
+    }
   };
 
   if (!isAuthenticated) {
+    // ... (login modal remains same)
     if (showLogin) {
       return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm">
@@ -167,7 +186,6 @@ export const AdminControls = () => {
                   placeholder="Enter admin password"
                 />
                 {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-                <p className="text-xs text-slate-400 mt-2">Default: admin123</p>
               </div>
               <div className="flex gap-3 pt-2">
                 <button
@@ -189,7 +207,6 @@ export const AdminControls = () => {
         </div>
       );
     }
-
     return (
       <button
         onClick={() => setShowLogin(true)}
@@ -205,52 +222,97 @@ export const AdminControls = () => {
     return (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm">
         <div className="bg-white dark:bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-md w-full border border-slate-200 dark:border-slate-800">
-          <h2 className="text-2xl font-serif font-medium mb-6 text-slate-900 dark:text-white">GitHub Settings</h2>
-          <p className="text-sm text-slate-500 mb-4">Configure these settings to enable saving content directly to your GitHub repository.</p>
+          <h2 className="text-2xl font-serif font-medium mb-6 text-slate-900 dark:text-white">Settings</h2>
+          
+          <div className="flex gap-4 mb-6 border-b border-slate-200 dark:border-slate-700">
+            <button 
+              onClick={() => setActiveTab('github')}
+              className={`pb-2 px-1 text-sm font-medium transition-colors ${activeTab === 'github' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'}`}
+            >
+              GitHub
+            </button>
+            <button 
+              onClick={() => setActiveTab('security')}
+              className={`pb-2 px-1 text-sm font-medium transition-colors ${activeTab === 'security' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'}`}
+            >
+              Security
+            </button>
+          </div>
+
           <form onSubmit={handleSaveSettings} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">GitHub Personal Access Token</label>
-              <input
-                type="password"
-                value={tempConfig.token}
-                onChange={(e) => setTempConfig({...tempConfig, token: e.target.value})}
-                className="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                placeholder="ghp_..."
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Repository Owner (Username)</label>
-              <input
-                type="text"
-                value={tempConfig.owner}
-                onChange={(e) => setTempConfig({...tempConfig, owner: e.target.value})}
-                className="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                placeholder="e.g. charlescchan"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Repository Name</label>
-              <input
-                type="text"
-                value={tempConfig.repo}
-                onChange={(e) => setTempConfig({...tempConfig, repo: e.target.value})}
-                className="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                placeholder="e.g. portfolio-2025"
-              />
-            </div>
-            <div className="flex gap-3 pt-2">
+            {activeTab === 'github' ? (
+              <>
+                <p className="text-sm text-slate-500 mb-2">Configure saving content directly to GitHub.</p>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Personal Access Token</label>
+                  <input
+                    type="password"
+                    value={tempConfig.token}
+                    onChange={(e) => setTempConfig({...tempConfig, token: e.target.value})}
+                    className="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                    placeholder="ghp_..."
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Repository Owner</label>
+                  <input
+                    type="text"
+                    value={tempConfig.owner}
+                    onChange={(e) => setTempConfig({...tempConfig, owner: e.target.value})}
+                    className="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                    placeholder="Username"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Repository Name</label>
+                  <input
+                    type="text"
+                    value={tempConfig.repo}
+                    onChange={(e) => setTempConfig({...tempConfig, repo: e.target.value})}
+                    className="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                    placeholder="Repo Name"
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="text-sm text-slate-500 mb-2">Set a password to lock the admin interface. This password will be stored in the content file.</p>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">New Password</label>
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                    placeholder="New password"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Confirm Password</label>
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                    placeholder="Confirm password"
+                  />
+                </div>
+              </>
+            )}
+
+            <div className="flex gap-3 pt-4">
               <button
                 type="submit"
                 className="flex-1 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors"
               >
-                Save Settings
+                {activeTab === 'github' ? 'Save Config' : 'Update Password'}
               </button>
               <button
                 type="button"
                 onClick={() => setShowSettings(false)}
                 className="flex-1 py-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
               >
-                Cancel
+                Close
               </button>
             </div>
           </form>
