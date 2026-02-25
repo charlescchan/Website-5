@@ -8,6 +8,7 @@ import { calculateReadingTime } from '../utils/readingTime';
 
 const PartA = () => {
   const [activeDefinitions, setActiveDefinitions] = useState<string[]>([]);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const definitions = [
     {
@@ -125,23 +126,30 @@ const PartA = () => {
           viewport={{ once: true }}
           className="max-w-3xl mx-auto"
         >
-            <div className="relative rounded-3xl overflow-hidden bg-slate-900 aspect-video group cursor-pointer shadow-2xl mb-4">
-            {/* YouTube video embed */}
-            <iframe
-              className="absolute inset-0 w-full h-full object-cover"
-              src="https://www.youtube.com/embed/RPDndy6F0I4?autoplay=0&rel=0"
-              title="Student Testimonial Video"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-
-            {/* Play button overlay */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-20 h-20 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 group-hover:scale-110 transition-transform duration-300 shadow-xl">
-                <Play className="text-white ml-1" fill="currentColor" size={32} />
+          <div className="relative rounded-3xl overflow-hidden bg-slate-900 aspect-video group cursor-pointer shadow-2xl mb-4">
+            {!isPlaying ? (
+              <div onClick={() => setIsPlaying(true)} className="absolute inset-0 w-full h-full">
+                <img 
+                  src="https://img.youtube.com/vi/RPDndy6F0I4/maxresdefault.jpg" 
+                  alt="Video Thumbnail" 
+                  className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity duration-500"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-20 h-20 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 group-hover:scale-110 transition-transform duration-300 shadow-xl">
+                    <Play className="text-white ml-1" fill="currentColor" size={32} />
+                  </div>
+                </div>
               </div>
-            </div>
+            ) : (
+              <iframe
+                className="absolute inset-0 w-full h-full object-cover"
+                src="https://www.youtube.com/embed/RPDndy6F0I4?autoplay=1&rel=0"
+                title="Student Testimonial Video"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            )}
           </div>
           
           <p className="text-sm text-slate-500 dark:text-slate-400 text-center italic">
