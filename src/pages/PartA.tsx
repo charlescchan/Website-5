@@ -60,7 +60,7 @@ const PartA = () => {
             <span className="text-blue-600 dark:text-blue-400 font-bold tracking-widest uppercase text-xs">Part A</span>
           </div>
           <h1 className="font-serif text-4xl md:text-5xl font-medium text-slate-900 dark:text-white mb-8 leading-tight">
-            Part A – Effective Teacher Librarian Philosophy
+            Effective Teacher Librarian Philosophy
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed italic">
             Please click on each of the words below and read together as one paragraph:

@@ -20,7 +20,6 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, setIsOpen }) =>
     { id: 'part-b', title: 'Part B: Critical Reflection', path: '/part-b', icon: <BookOpen className="h-4 w-4" />, category: 'Navigation' },
     { id: 'part-c', title: 'Part C: Evaluation of Future Practice', path: '/part-c', icon: <ArrowRight className="h-4 w-4" />, category: 'Navigation' },
     { id: 'references', title: 'References', path: '/references', icon: <BookOpen className="h-4 w-4" />, category: 'Navigation' },
-    { id: 'contact', title: 'Contact Me', action: () => window.location.href = 'mailto:charles.chan@example.com', icon: <User className="h-4 w-4" />, category: 'Actions' },
   ];
 
   const filteredItems = query === ''
