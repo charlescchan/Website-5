@@ -88,7 +88,7 @@ const Home = () => {
           </motion.div>
 
           {/* Part A Card */}
-          <SpotlightCard variants={item} className="md:col-span-6 lg:col-span-3 p-6 hover:border-blue-500/50 transition-colors group rounded-3xl" spotlightColor="rgba(59, 130, 246, 0.15)">
+          <SpotlightCard variants={item} className="md:col-span-3 p-6 hover:border-blue-500/50 transition-colors group rounded-3xl" spotlightColor="rgba(59, 130, 246, 0.15)">
             <Link to="/part-a" className="h-full flex flex-col">
               <div className="flex justify-between items-start mb-4">
                 <div className="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-2xl group-hover:scale-110 transition-transform">
@@ -96,7 +96,7 @@ const Home = () => {
                 </div>
                 <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Part A</span>
               </div>
-              <h3 className="text-xl font-serif font-medium mb-2 group-hover:text-blue-600 transition-colors"><EditableText id="home.partA.title" defaultText="Professional Knowledge" /></h3>
+              <h3 className="text-xl font-serif font-medium mb-2 text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors"><EditableText id="home.partA.title" defaultText="Professional Knowledge" /></h3>
               <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
                 <EditableText id="home.partA.desc" defaultText="My philosophy statement and the theoretical foundations of modern librarianship." />
               </p>
@@ -104,7 +104,7 @@ const Home = () => {
           </SpotlightCard>
 
           {/* Part B Card */}
-          <SpotlightCard variants={item} className="md:col-span-6 lg:col-span-3 p-6 hover:border-indigo-500/50 transition-colors group rounded-3xl" spotlightColor="rgba(99, 102, 241, 0.15)">
+          <SpotlightCard variants={item} className="md:col-span-3 p-6 hover:border-indigo-500/50 transition-colors group rounded-3xl" spotlightColor="rgba(99, 102, 241, 0.15)">
             <Link to="/part-b" className="h-full flex flex-col">
               <div className="flex justify-between items-start mb-4">
                 <div className="p-3 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 rounded-2xl group-hover:scale-110 transition-transform">
@@ -112,7 +112,7 @@ const Home = () => {
                 </div>
                 <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Part B</span>
               </div>
-              <h3 className="text-xl font-serif font-medium mb-2 group-hover:text-indigo-600 transition-colors"><EditableText id="home.partB.title" defaultText="Critical Reflection" /></h3>
+              <h3 className="text-xl font-serif font-medium mb-2 text-slate-900 dark:text-white group-hover:text-indigo-600 transition-colors"><EditableText id="home.partB.title" defaultText="Critical Reflection" /></h3>
               <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
                 <EditableText id="home.partB.desc" defaultText="Three themes of learning: Collaboration, Leadership, and AI integration." />
               </p>
@@ -120,7 +120,7 @@ const Home = () => {
           </SpotlightCard>
 
           {/* Part C Card */}
-          <SpotlightCard variants={item} className="md:col-span-6 lg:col-span-3 p-6 hover:border-teal-500/50 transition-colors group rounded-3xl" spotlightColor="rgba(20, 184, 166, 0.15)">
+          <SpotlightCard variants={item} className="md:col-span-3 p-6 hover:border-teal-500/50 transition-colors group rounded-3xl" spotlightColor="rgba(20, 184, 166, 0.15)">
             <Link to="/part-c" className="h-full flex flex-col">
               <div className="flex justify-between items-start mb-4">
                 <div className="p-3 bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 rounded-2xl group-hover:scale-110 transition-transform">
@@ -128,7 +128,7 @@ const Home = () => {
                 </div>
                 <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Part C</span>
               </div>
-              <h3 className="text-xl font-serif font-medium mb-2 group-hover:text-teal-600 transition-colors"><EditableText id="home.partC.title" defaultText="Future Practice" /></h3>
+              <h3 className="text-xl font-serif font-medium mb-2 text-slate-900 dark:text-white group-hover:text-teal-600 transition-colors"><EditableText id="home.partC.title" defaultText="Future Practice" /></h3>
               <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
                 <EditableText id="home.partC.desc" defaultText="Evaluation against ALIA standards and strategic planning for the future." />
               </p>
@@ -136,7 +136,7 @@ const Home = () => {
           </SpotlightCard>
 
           {/* References Card */}
-          <SpotlightCard variants={item} className="md:col-span-6 lg:col-span-3 p-6 hover:border-slate-500/50 transition-colors group rounded-3xl" spotlightColor="rgba(148, 163, 184, 0.15)">
+          <SpotlightCard variants={item} className="md:col-span-3 p-6 hover:border-slate-500/50 transition-colors group rounded-3xl" spotlightColor="rgba(148, 163, 184, 0.15)">
              <Link to="/references" className="h-full flex flex-col">
                 <div className="flex justify-between items-start mb-4">
                   <div className="p-3 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-2xl group-hover:scale-110 transition-transform">
@@ -146,7 +146,7 @@ const Home = () => {
                     <ArrowRight size={14} className="text-slate-400" />
                   </div>
                 </div>
-                <h3 className="text-xl font-serif font-medium mb-2 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors"><EditableText id="home.references.title" defaultText="Academic References" /></h3>
+                <h3 className="text-xl font-serif font-medium mb-2 text-slate-900 dark:text-white group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors"><EditableText id="home.references.title" defaultText="Academic References" /></h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
                   <EditableText id="home.references.desc" defaultText="Comprehensive bibliography and works cited." />
                 </p>

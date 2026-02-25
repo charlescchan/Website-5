@@ -49,11 +49,11 @@ const PartB = () => {
           
           {/* Figure 2 */}
           <figure className="my-8">
-            <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 aspect-video relative">
+            <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900">
               <img 
                 src="/images/figure2.png" 
                 alt="Secondary Media Center (SMC) Makerspace" 
-                className="w-full h-full object-cover"
+                className="w-full h-auto"
               />
             </div>
             <figcaption className="mt-4 text-sm text-slate-500 dark:text-slate-400 text-center italic">
@@ -78,11 +78,11 @@ const PartB = () => {
 
             {/* Figure 3 */}
             <figure className="my-8">
-              <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 aspect-[4/3] relative">
+              <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900">
                 <img 
                   src="/images/figure3.png" 
                   alt="Email Correspondence about Videography Project" 
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto"
                 />
               </div>
               <figcaption className="mt-4 text-sm text-slate-500 dark:text-slate-400 text-center italic">
@@ -108,11 +108,11 @@ const PartB = () => {
 
             {/* Figure 4 */}
             <figure className="my-8">
-              <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 aspect-video relative">
+              <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900">
                 <img 
                   src="/images/figure4.png" 
                   alt="Leadership Connections in Current School" 
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto"
                 />
               </div>
               <figcaption className="mt-4 text-sm text-slate-500 dark:text-slate-400 text-center italic">
@@ -164,14 +164,14 @@ const PartB = () => {
               Evidence of my growing understanding of TL leadership can be seen in my blog posts and TL practice. In an earlier blog post, I demonstrated a shift in understanding that leadership, including providing professional development, was an important aspect of the TL role, but was unsure how to accomplish it (Chan, 2025f). This shift stemmed from the understanding that the TL role needs to be continually renegotiated to fit the current needs of the school and bring clear and visible value to teaching and learning (Bentley et al., 2016). In my practice, I began putting theory into practice: at the tail end of a staff meeting when the principal brought up the topic of generative AI (GenAI), I raised my hand nervously and told the entire high school staff that I could assist them with GenAI, if they wanted help learning (Chan, 2025i). This marked a clear shift in my thinking and practice as a TL; in the past I would not have even considered offering training on a subject related to technology, since our school has an Education Technology team. However, I took action based on a new understanding of the TL role, which includes being visible and offering teachers PD on skills I possessed. This eventually led to the principal delegating to me an opportunity to lead a PD session on GenAI, which the middle and high school staff found helpful (Figures 6 and 7). From the course, subject, and this experience, I’ve learned to continually reflect and look for opportunities to connect with administrators and colleagues through leadership roles to impact teaching and learning with the skills and knowledge I have as a TL.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+            <div className="flex flex-col gap-8 my-8">
               {/* Figure 6 */}
               <figure>
-                <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 aspect-square relative">
+                <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 relative">
                   <img 
                     src="/images/figure6.png" 
                     alt="PD Schedule Snippet" 
-                    className="w-full h-full object-cover"
+                    className="w-full h-auto"
                   />
                 </div>
                 <figcaption className="mt-4 text-sm text-slate-500 dark:text-slate-400 text-center italic">
@@ -183,11 +183,11 @@ const PartB = () => {
 
               {/* Figure 7 */}
               <figure>
-                <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 aspect-square relative">
+                <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 relative">
                   <img 
                     src="/images/figure7.png" 
                     alt="Certificate of Recognition for Technology PD" 
-                    className="w-full h-full object-cover"
+                    className="w-full h-auto"
                   />
                 </div>
                 <figcaption className="mt-4 text-sm text-slate-500 dark:text-slate-400 text-center italic">
@@ -214,11 +214,11 @@ const PartB = () => {
 
             {/* Figure 8 */}
             <figure className="my-8">
-              <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 aspect-video relative">
+              <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900">
                 <img 
                   src="/images/figure8.png" 
                   alt="Nanyang Technological University Library Homepage" 
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto"
                 />
               </div>
               <figcaption className="mt-4 text-sm text-slate-500 dark:text-slate-400 text-center italic">
@@ -234,11 +234,11 @@ const PartB = () => {
 
             {/* Figure 9 */}
             <figure className="my-8">
-              <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 aspect-[4/3] relative">
+              <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900">
                 <img 
                   src="/images/figure9.png" 
                   alt="Email Correspondence Regarding Staff Meeting PD" 
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto"
                 />
               </div>
               <figcaption className="mt-4 text-sm text-slate-500 dark:text-slate-400 text-center italic">
