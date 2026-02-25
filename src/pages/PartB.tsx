@@ -51,7 +51,7 @@ const PartB = () => {
           <figure className="my-8">
             <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 aspect-video relative">
               <img 
-                src="https://images.unsplash.com/photo-1598520106830-8c45c2035460?q=80&w=2574&auto=format&fit=crop" 
+                src="/images/figure2.png" 
                 alt="Secondary Media Center (SMC) Makerspace" 
                 className="w-full h-full object-cover"
               />
@@ -80,7 +80,7 @@ const PartB = () => {
             <figure className="my-8">
               <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 aspect-[4/3] relative">
                 <img 
-                  src="https://images.unsplash.com/photo-1557200134-90327ee9fafa?q=80&w=2670&auto=format&fit=crop" 
+                  src="/images/figure3.png" 
                   alt="Email Correspondence about Videography Project" 
                   className="w-full h-full object-cover"
                 />
@@ -110,7 +110,7 @@ const PartB = () => {
             <figure className="my-8">
               <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 aspect-video relative">
                 <img 
-                  src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2670&auto=format&fit=crop" 
+                  src="/images/figure4.png" 
                   alt="Leadership Connections in Current School" 
                   className="w-full h-full object-cover"
                 />
@@ -169,7 +169,7 @@ const PartB = () => {
               <figure>
                 <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 aspect-square relative">
                   <img 
-                    src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2670&auto=format&fit=crop" 
+                    src="/images/figure6.png" 
                     alt="PD Schedule Snippet" 
                     className="w-full h-full object-cover"
                   />
@@ -185,7 +185,7 @@ const PartB = () => {
               <figure>
                 <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 aspect-square relative">
                   <img 
-                    src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?q=80&w=2671&auto=format&fit=crop" 
+                    src="/images/figure7.png" 
                     alt="Certificate of Recognition for Technology PD" 
                     className="w-full h-full object-cover"
                   />
@@ -216,7 +216,7 @@ const PartB = () => {
             <figure className="my-8">
               <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 aspect-video relative">
                 <img 
-                  src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=2670&auto=format&fit=crop" 
+                  src="/images/figure8.png" 
                   alt="Nanyang Technological University Library Homepage" 
                   className="w-full h-full object-cover"
                 />
@@ -236,7 +236,7 @@ const PartB = () => {
             <figure className="my-8">
               <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900 aspect-[4/3] relative">
                 <img 
-                  src="https://images.unsplash.com/photo-1557200134-90327ee9fafa?q=80&w=2670&auto=format&fit=crop" 
+                  src="/images/figure9.png" 
                   alt="Email Correspondence Regarding Staff Meeting PD" 
                   className="w-full h-full object-cover"
                 />
