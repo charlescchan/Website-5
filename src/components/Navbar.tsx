@@ -57,9 +57,6 @@ const Navbar = () => {
                 <span className="font-serif font-bold text-lg leading-none text-slate-900 dark:text-white">
                   Charles Chan
                 </span>
-                <span className="text-[10px] uppercase tracking-widest text-slate-500 font-medium">
-                  Teacher Librarian
-                </span>
               </div>
             </Link>
 
