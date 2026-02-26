@@ -71,13 +71,12 @@ const References = () => {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 noise-bg font-sans">
       <Navbar />
-      <AdminControls />
       
       <main className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
         <div className="text-center mb-16">
           <span className="text-slate-500 font-bold tracking-widest uppercase text-xs mb-4 block">Works Cited</span>
           <h1 className="font-serif text-4xl md:text-5xl font-medium text-slate-900 dark:text-white mb-6">
-            <EditableText id="refs.title" defaultText="References" />
+            References
           </h1>
           
           {/* Decorative Search Bar */}
