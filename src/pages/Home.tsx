@@ -55,7 +55,7 @@ const Home = () => {
 
           {/* Profile Card */}
           <motion.div variants={item} className="md:col-span-4 md:row-span-2 bg-slate-900 dark:bg-slate-800 rounded-3xl p-8 shadow-sm border border-slate-800 flex flex-col text-white relative overflow-hidden">
-             <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=2628&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay"></div>
+             <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2670&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay"></div>
              <div className="relative z-10 flex flex-col h-full">
                 <div className="size-16 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center mb-auto border border-white/20">
                   <span className="font-serif text-3xl">CC</span>
